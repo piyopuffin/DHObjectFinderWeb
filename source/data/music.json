@@ -1,0 +1,8 @@
+{
+    "songlist": [
+        {"id": "0", "title": "Check it Out", "filename": "./music/Check_It_Out.mp3", "desc": "BGM of the public space \"The Playground\""},
+        {"id": "1", "title": "Battle of BRS", "filename": "./music/Battle_of_BRS.mp3", "desc": "Amazing BRS song"},
+        {"id": "2", "title": "LocoRoco Island Ambience", "filename": "./music/LocoRoco Island Ambience.mp3", "desc": "Relaxing ocean sounds from LocoRoco Island"},
+        {"id": "3", "title": "LocoRoco Title Theme", "filename": "./music/LocoRoco Title Theme.mp3", "desc": "LocoRoco Title Theme"}
+    ]
+}

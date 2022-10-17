@@ -239,28 +239,28 @@ section{
                 background: con.$maincolor;
                 th{
                     padding: .3em 1em;
-                    &:nth-child(1){
+                    &:nth-child(1){             // IMG
                         min-width: 3em;
                     }
-                    &:nth-child(2){
+                    &:nth-child(2){             // HASH
                         min-width: 7em;
                     }
-                    &:nth-child(3){
-                        min-width: 12em;
+                    &:nth-child(3){             // UUID
+                        min-width: 20em;
                     }
-                    &:nth-child(4){
+                    &:nth-child(4){             // NAME
                         min-width: 6em;
                     }
-                    &:nth-child(5){
+                    &:nth-child(5){             // TYPE
                         min-width: 8em;
                     }
-                    &:nth-child(6){
+                    &:nth-child(6){             // DESCRIPTION
                         min-width: 10em;
                     }
-                    &:nth-child(7){
-                        min-width: 10em;
+                    &:nth-child(7){             // YEAR
+                        min-width: 6em;
                     }
-                    &:nth-child(8){
+                    &:nth-child(8){             // URI
                         min-width: 5.4em;
                     }
                 }

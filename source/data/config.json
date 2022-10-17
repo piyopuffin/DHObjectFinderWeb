@@ -1,0 +1,47 @@
+{
+    "categories": [
+        "Animation",
+        "Companion",
+        "Female Feet",
+        "Female Glasses",
+        "Female Hair",
+        "Female Hands",
+        "Female Hat",
+        "Female JewelBothEars",
+        "Female JewelLeftEar",
+        "Female JewelRightEar",
+        "Female Leg",
+        "Female Outfit",
+        "Female Tors",
+        "Furniture",
+        "Locomotion",
+        "Male FacialHair",
+        "Male Feet",
+        "Male Glasses",
+        "Male Hair",
+        "Male Hands",
+        "Male Hat",
+        "Male JewelBothEars",
+        "Male JewelLeftEar",
+        "Male JewelRightEar",
+        "Male Leg",
+        "Male Outfit",
+        "Male Tors",
+        "Minigame",
+        "Other"
+    ],
+    "headers": [
+        { "text": "IMG", "value": "img" },
+        { "text": "Hash", "value": "hash" },
+        { "text": "UUID", "value": "uuid" },
+        { "text": "Name", "value": "name" },
+        { "text": "Type", "value": "type" },
+        { "text": "Desc", "value": "desc" },
+        { "text": "Year", "value": "year" },
+        { "text": "URI", "value": "uri" }
+    ],
+    "data-template": [
+        { "uuid": "", "name": "", "type": "",  "desc": "", "year": "", "uri": "" },
+        { "uuid": "", "name": "", "type": "",  "desc": "", "year": "", "uri": "" }
+    ]
+}
