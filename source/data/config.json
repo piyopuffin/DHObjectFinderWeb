@@ -39,9 +39,5 @@
         { "text": "Desc", "value": "desc" },
         { "text": "Year", "value": "year" },
         { "text": "URI", "value": "uri" }
-    ],
-    "data-template": [
-        { "uuid": "", "name": "", "type": "",  "desc": "", "year": "", "uri": "" },
-        { "uuid": "", "name": "", "type": "",  "desc": "", "year": "", "uri": "" }
     ]
 }
