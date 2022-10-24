@@ -13,13 +13,20 @@
     <link rel="apple-touch-icon" href="./img/favicon.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css?family=Noto+Sans+JP:100,300,400,500,700,900&amp;subset=japanese" rel="stylesheet" nonce="">
-    <link href="https://fonts.googleapis.com/css?family=Google+Sans:400,500,700|Roboto:100,300,400,500,700,900&amp;lang=ja" rel="stylesheet" nonce="">
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/@mdi/font@4.x/css/materialdesignicons.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.css" rel="stylesheet">
+    <link defer href="https://fonts.googleapis.com/css?family=Google+Sans:400,500,700|Roboto:100,300,400,500,700,900" rel="stylesheet" nonce="">
+    <link defer href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link defer href="https://cdn.jsdelivr.net/npm/@mdi/font@4.x/css/materialdesignicons.min.css" rel="stylesheet">
+    <link defer href="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.css" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="./css/style.css">
     <link rel="manifest" href="manifest.json" crossorigin="use-credentials">
+    <script>
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('./js/sw.js')
+            .then((reg) => {
+                console.log('Service worker registered.', reg);
+            });
+        }
+    </script>
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-M3V5V6YFNZ"></script>
     <script>
@@ -97,7 +104,7 @@
         </v-app>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14"></script>
-    <script src="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios@0.17.1/dist/axios.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue-simple-spinner@1.2.8/dist/vue-simple-spinner.min.js"></script>
     <script src="./js/main.js"></script>
