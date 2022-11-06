@@ -1,125 +1,92 @@
 const Spinner = window.VueSimpleSpinner;
-var result = new Vue({
-    el: '#app',
-    vuetify: new Vuetify(),
-    components: {
-        Spinner
-    },
-    data:{
-        gridData:[],
+const vue_options = { el: '#app', vuetify: new Vuetify(), components: { Spinner } };
+
+var vue;
+var categories  = [];
+var headers     = [];
+
+async function initialise() {
+    const config = await axios.get('data/config.json');
+    categories  = config.data['categories'];
+    headers     = config.data['headers'];
+    vueSetup();
+}
+
+function vueSetup() {
+    vue_options.data = {
+        gridData: [],
         loading: true,
-        types:[
-            "Animation",
-            "Companion",
-            "Female Feet",
-            "Female Glasses",
-            "Female Hair",
-            "Female Hands",
-            "Female Hat",
-            "Female JewelBothEars",
-            "Female JewelLeftEar",
-            "Female JewelRightEar",
-            "Female Leg",
-            "Female Outfit",
-            "Female Tors",
-            "Furniture",
-            "Locomotion",
-            "Male FacialHair",
-            "Male Feet",
-            "Male Glasses",
-            "Male Hair",
-            "Male Hands",
-            "Male Hat",
-            "Male JewelBothEars",
-            "Male JewelLeftEar",
-            "Male JewelRightEar",
-            "Male Leg",
-            "Male Outfit",
-            "Male Tors",
-            "Minigame",
-            "Other"
-        ],
-        headers:[
-            {text:"IMG",value:"img"},
-            {text:"HASH",value:"hash"},
-            {text:"UUID",value:"uuid"},
-            {text:"Type",value:"type"},
-            {text:"Name",value:"name"},
-            {text:"Description",value:"description"},
-            {text:"URI",value:"uri"},
-            {text:"Year",value:"year"},
-        ],
+        types: categories, 
+        headers: headers, 
         keyword:'',
-        selected:'',
-        total:0,
-        results:[],
-        perPage: 30,
+        selected: '',
+        total: 0,
+        results: [],
+        perPage: 30, 
         currentPage: 1,
-        datacount:"",
-        pageCount:0,
-    },
-    beforeCreate: function () {
+        datacount: '',
+        pageCount: 0
+    };
+
+    // Vue functions
+    vue_options.beforeCreate = function() {
         this.loading = true;
-        axios.get('data/database1.json')
-            .then(function (response) {
-                result.results = response.data;
-                gridData = response.data;
+        axios.get('data/database.json')
+            .then((response) => {
+                this.results  = response.data;
+                this.gridData = response.data;
             })
-            .catch(function (error) {
-                console.log(error);
-            });
-    },
-    updated:function(){
-        const load = () => {
-            this.loading = false;
-        }
-        load();
-        this.datacount = gridData.length;
-    },
-    methods:{
-        search: function(){
+            .catch(console.error);
+    };
+    vue_options.updated = function() {
+        this.loading   = false;
+        this.datacount = this.gridData.length;
+    };
+
+    // Methods
+    vue_options.methods = {
+        search: function() {
             var filtered = [];
-            var dataset = gridData;
-            for(var i in dataset) {
-                var row = dataset[i];
-                if((
-                    row.hash.indexOf(this.keyword) !== -1 ||
-                    row.uuid.indexOf(this.keyword) !== -1 ||
-                    row.type.indexOf(this.keyword) !== -1 ||
-                    row.description.indexOf(this.keyword) !== -1 ||
-                    row.uri.indexOf(this.keyword) !== -1 ||
-                    row.year.indexOf(this.keyword) !== -1 ) &&
-                    row.type.indexOf(this.selected) !== -1
-                ){
+            var dataset  = this.gridData;
+            for (var i in dataset) {
+                const row    = dataset[i];
+                const rowStr = JSON.stringify(row);
+                if (rowStr.indexOf(this.keyword) !== -1) {
+                    if (this.selected && row.type !== this.selected) continue;
                     filtered.push(row);
                 }
             }
             this.results = filtered;
             this.currentPage = 1;
         },
-        noImage(element){
-            element.target.src = './img/noimage.png'
-        }
-    },
-    computed: {
+        noImage(element) { element.target.src = './img/noimage.png' }
+    };
+
+    // Computed methods
+    vue_options.computed = {
         getItems: function() {
             let current = this.currentPage * this.perPage;
-            let start = current - this.perPage;
+            let start   = current - this.perPage;
             return this.results.slice(start, current);
         },
-        getPageCount: function() {
-            return Math.ceil(this.results.length / this.perPage);
+        getHash: function() {
+            return item => {
+                var uint32 = new Uint32Array(1);
+                var sanitised = String(item.uri).toLowerCase();
+                for (var char of sanitised) {
+                    uint32[0] *= 37;
+                    uint32[0] += char.charCodeAt();
+                }
+                return new DataView(uint32.buffer).getUint32(0, true);  // 'true' indicates LE but this outputs the (intended) BE value...??
+            } 
         },
-        getImagePath:function(){
-            let uuid = this.results.uuid;
-            const imgpash = "./thumb/large/";
-            const file = ".png";
-            let path = imgpash + uuid + file;
-            return path;
-        },
-        countData: function(){
-            this.total = this.results.length();
-            return this.total;
-        }
+        getPageCount: function() { return Math.ceil(this.results.length / this.perPage); },
+        getImagePath: function() { return uuid => `./thumb/large/${uuid}.png` },
+        countData:    function() { return this.results.length(); },
     }
-})
+
+    // Initialise Vue with the configured options
+    vue = new Vue(vue_options);
+}
+
+initialise();

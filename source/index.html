@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="ja">
+<html lang="en">
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -12,20 +13,19 @@
     <link rel="apple-touch-icon" href="./img/favicon.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css?family=Noto+Sans+JP:100,300,400,500,700,900&amp;subset=japanese" rel="stylesheet" nonce="">  
-    <link href="https://fonts.googleapis.com/css?family=Google+Sans:400,500,700|Roboto:100,300,400,500,700,900&amp;lang=ja" rel="stylesheet" nonce="">
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/@mdi/font@4.x/css/materialdesignicons.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.css" rel="stylesheet">
+    <link defer href="https://fonts.googleapis.com/css?family=Google+Sans:400,500,700|Roboto:100,300,400,500,700,900" rel="stylesheet" nonce="">
+    <link defer href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link defer href="https://cdn.jsdelivr.net/npm/@mdi/font@4.x/css/materialdesignicons.min.css" rel="stylesheet">
+    <link defer href="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.css" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="./css/style.css">
     <link rel="manifest" href="manifest.json" crossorigin="use-credentials">
     <script>
-    if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('./js/sw.js')
-        .then((reg) => {
-            console.log('Service worker registered.', reg);
-        });
-    }
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('./js/sw.js')
+            .then((reg) => {
+                console.log('Service worker registered.', reg);
+            });
+        }
     </script>
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-M3V5V6YFNZ"></script>
@@ -33,128 +33,81 @@
         window.dataLayer = window.dataLayer || [];
         function gtag(){dataLayer.push(arguments);}
         gtag('js', new Date());
-
         gtag('config', 'G-M3V5V6YFNZ');
     </script>
 </head>
+
 <body>
     <div id="app">
         <v-app>
             <header>
-                <a href="/">
-                    <img src="./img/DH.svg" alt="logo">
-                    <h1>Object Finder</h1>
-                </a>
-            <header>
-            <v-main v-show="loading">
-                <v-container  fluid>
-                    <v-row style="height: 450px; width: 50%; margin: 0 auto;"
-                    justify="center" align-content="center"
-                    >
-                    <v-col>
-                        <v-card class="pt-12 pb-8" flat>
-                            <spinner></spinner>
-                            <p class="text-center mt-3">Database Loading...</p>
-                        </v-card>
-                    </v-col>
-                    </v-row>
-                </v-container>
-            </v-main>
-            <v-main v-show="!loading">
-                <v-container tag="section" class="pre">
-                    <p>You can search from all the objects that the Destination Home team has found and stored so far!<a href="releasenotes.html"><span class="material-icons">text_snippet</span>Release Notes</a></p>
-                    <p v-cloak>We have <span id="datacount">{{ datacount }}</span> objects now!</p>
-                </v-container>
-                <section id="search">
-                    <v-select id="type" 
-                        label="Type" 
-                        filled 
-                        background-color="rgba(255,255,255,.3)"
-                        v-model="selected"
-                        rounded
-                        :items="types"
-                        clearable
-                        color="white"
-                    >
-                    </v-select>
-                    <v-text-field
-                        v-model="keyword"
-                        label="Keyword"
-                        color="white"
-                        rounded
-                        background-color="rgba(255,255,255,.3)"
-                        filled
-                    >
-                    </v-text-field>
-                    <v-text-field
-                        :value="perPage"
-                        label="Items per page"
-                        color="white"
-                        filled
-                        rounded
-                        type="number"
-                        background-color="rgba(255,255,255,.3)"
-                        min="15"
-                        max="100"
-                        @input="perPage = parseInt($event, 10)"
-                    ></v-text-field>
-                    <button class="searchbtn" v-on:click="search">Search</button>
-                </section>
-                <p class="resultcount"><span v-cloak>{{results.length}}</span> object(s) found!</p>
-                <section id="result">
-                    <v-data-table
-                    :headers="headers"
-                    :items="results"
-                    :page.sync="currentPage"
-                    :items-per-page="perPage"
-                    hide-default-footer
-                    @page-count="pageCount = $event"
-                    >
-                    <template v-slot:item.img="{ item }">
-                        <img :src="'./thumb/large/' + item.uuid + '.png'" @error="noImage" />
-                    </template>
-                    </v-data-table>
-                </section>
-                <nav>
-                    <div class="text-center pt-2">
-                        <v-pagination
-                          v-model="currentPage"
-                          :length="pageCount"
-                        ></v-pagination>
-                    </div>
-                </nav>
-            </v-main>
-            <v-footer tag="footer" elevation="0" dark color="#1e1e1e" v-cloak>
-                <v-card class="wrap">
-                    <v-card-title>DISCLAIMER</v-card-title>
-                    <v-card-text>We are not affiliated with Sony Interactive Entertainment (SIE) or any other game developers licensed by SIE. This project is purely for preservation and educational purposes, our team does not accept ANY forms of donations nor any form of compensation.</v-card-text>
-                    <v-divider name="hr"></v-divider>
-                    <v-card-text>© All rights Reserved Destination Home.</v-card-text>
-                </v-card>
-            </v-footer>
-            <div class="bgarea">
-                <ul class="objects">
-                    <li></li>
-                    <li></li>
-                    <li></li>
-                    <li></li>
-                    <li></li>
-                    <li></li>
-                    <li></li>
-                    <li></li>
-                    <li></li>
-                    <li></li>
-                </ul>
-            </div>
+                <a href="/"><img src="./img/DH.svg" alt="logo"><h1>Object Finder</h1></a>
+                <v-main v-show="loading">
+                    <v-container fluid>
+                        <v-row style="height: 450px; width: 50%; margin: 0 auto;" justify="center" align-content="center">
+                            <v-col>
+                                <v-card class="pt-12 pb-8" flat>
+                                    <spinner></spinner>
+                                    <p class="text-center mt-3">Database Loading...</p>
+                                </v-card>
+                            </v-col>
+                        </v-row>
+                    </v-container>
+                </v-main>
+                <v-main v-show="!loading">
+                    <v-container tag="section" class="pre">
+                        <p>You can search from all the objects that the Destination Home team has found and stored so far!<a href="releasenotes.html"><span class="material-icons">text_snippet</span>Release Notes</a></p>
+                        <p v-cloak>We have <span id="datacount">{{ datacount }}</span> objects now!</p>
+                    </v-container>
+                    <section id="search">
+                        <v-select id="type" label="Type" filled background-color="rgba(255,255,255,.3)" v-model="selected" rounded :items="types" clearable color="white"></v-select>
+                        <v-text-field v-model="keyword" label="Keyword" color="white" rounded background-color="rgba(255,255,255,.3)" filled></v-text-field>
+                        <v-text-field :value="perPage" label="Items per page" color="white" filled rounded type="number" background-color="rgba(255,255,255,.3)" min="15" max="100" @input="perPage = parseInt($event, 10)"></v-text-field>
+                        <button class="searchbtn" v-on:click="search">Search</button>
+                    </section>
+                    <p class="resultcount"><span v-cloak>{{results.length}}</span> object(s) found!</p>
+                    <section id="result">
+                        <v-data-table :headers="headers" :items="results" :page.sync="currentPage" :items-per-page="perPage" hide-default-footer @page-count="pageCount = $event">
+                            <template v-slot:item.img="{ item }"><img width="120px" height="66px" style="object-fit: scale-down;" :src="getImagePath(item.uuid)" @error="noImage" /></template>
+                            <template v-slot:item.hash="{ item }">{{ getHash(item) }}</template>
+                        </v-data-table>
+                    </section>
+                    <nav>
+                        <div class="text-center pt-2">
+                            <v-pagination v-model="currentPage" :length="pageCount"></v-pagination>
+                        </div>
+                    </nav>
+                </v-main>
+                <v-footer tag="footer" elevation="0" dark color="#1e1e1e" v-cloak>
+                    <v-card class="wrap">
+                        <v-card-title>DISCLAIMER</v-card-title>
+                        <v-card-text>We are not affiliated with Sony Interactive Entertainment (SIE) or any other game developers licensed by SIE. This project is purely for preservation and educational purposes, our team does not accept ANY forms of donations nor any form of compensation.</v-card-text>
+                        <v-divider name="hr"></v-divider>
+                        <v-card-text>© All rights Reserved Destination Home.</v-card-text>
+                    </v-card>
+                </v-footer>
+                <div class="bgarea">
+                    <ul class="objects">
+                        <li></li>
+                        <li></li>
+                        <li></li>
+                        <li></li>
+                        <li></li>
+                        <li></li>
+                        <li></li>
+                        <li></li>
+                        <li></li>
+                        <li></li>
+                    </ul>
+                </div>
+            </header>
         </v-app>
     </div>
-    <!-- <script src="./js/jquery-3.6.0.min.js"></script> -->
-    <!-- <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script> -->
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14"></script>
-    <script src="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.5/lodash.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios@0.17.1/dist/axios.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue-simple-spinner@1.2.8/dist/vue-simple-spinner.min.js"></script>
     <script src="./js/main.js"></script>
 </body>
+
 </html>
